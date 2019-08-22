@@ -1,6 +1,14 @@
-# CFLAGS := -O3 -Wall -Wextra
-CFLAGS := -fsanitize=address -Wall -Wextra
-CC := gcc
+BUILD := DEBUG
+SAN := address # thread,memory,undefined
+ifeq ($(BUILD),RELEASE)
+  CFLAGS := -O3 -Wall -Wextra
+else ifeq ($(BUILD),DEBUG)
+  CFLAGS := -fsanitize=$(SAN) -g3 -Wall -Wextra
+else
+  $(error Usage: make BUILD=[RELEASE,DEBUG])
+endif
+
+CC := clang
 
 all: serial
 
