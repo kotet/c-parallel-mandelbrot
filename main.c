@@ -22,8 +22,8 @@ int main(int argc, char const *argv[])
     mandel_calc(dst, width, height, top, left, bottom, right);
     gettimeofday(&end, NULL);
 
-    int64_t diff_time = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
-    printf("%ld[us]\n", diff_time);
+    double diff_time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
+    printf("%f[s]\n", diff_time);
 
     char filename[256];
     if (0 < argc)
