@@ -6,8 +6,8 @@
 #include <malloc.h>
 #include <string.h>
 
-#define width (5000)
-#define height (5000)
+#define width (10000)
+#define height (10000)
 #define top (2.0)
 #define left (-2.0)
 #define bottom (-2.0)
