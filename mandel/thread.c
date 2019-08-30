@@ -18,8 +18,6 @@ struct mandel_calc_args
     uint64_t id;
 };
 
-pthread_barrier_t barrier;
-
 void *mandel_calc_thread(void *ptr)
 {
     struct mandel_calc_args *args = (struct mandel_calc_args *)ptr;
@@ -34,7 +32,6 @@ void *mandel_calc_thread(void *ptr)
             args->dst[y * args->width + x] = mandel_test(re, im);
         }
     }
-    pthread_barrier_wait(&barrier);
     return (void *)0;
 }
 
@@ -43,9 +40,6 @@ void mandel_calc(uint8_t *dst, uint64_t width, uint64_t height, double top, doub
     int err;
     struct mandel_calc_args args[THREAD_NUM];
     pthread_t thread_id[THREAD_NUM];
-    err = pthread_barrier_init(&barrier, NULL, THREAD_NUM + 1);
-    if (err != 0)
-        ERROR("can't create barrier");
     for (size_t i = 0; i < THREAD_NUM; i++)
     {
         args[i] = (struct mandel_calc_args){dst, width, height, top, left, bottom, right, (uint64_t)i};
@@ -53,5 +47,10 @@ void mandel_calc(uint8_t *dst, uint64_t width, uint64_t height, double top, doub
         if (err != 0)
             ERROR("can't create thread");
     }
-    pthread_barrier_wait(&barrier);
+    for (size_t i = 0; i < THREAD_NUM; i++)
+    {
+        err = pthread_join(thread_id[i], NULL);
+        if (err != 0)
+            ERROR("pthread_join failed");
+    }
 }
