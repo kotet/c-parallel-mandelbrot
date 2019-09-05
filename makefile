@@ -10,7 +10,7 @@ endif
 
 CC := clang
 
-TARGETS = serial thread fork_pipe thread_scheduling_mutex
+TARGETS = serial thread fork_pipe thread_scheduling_mutex thread_scheduling_atomic
 
 all: $(TARGETS)
 
@@ -19,9 +19,11 @@ test: all
 	./thread
 	./fork_pipe
 	./thread_scheduling_mutex
+	./thread_scheduling_atomic
 	@diff -s serial.pgm thread.pgm
 	@diff -s serial.pgm fork_pipe.pgm
 	@diff -s serial.pgm thread_scheduling_mutex.pgm
+	@diff -s serial.pgm thread_scheduling_atomic.pgm
 
 serial: main.o mandel/base.o mandel/serial.o
 	$(CC) $(CFLAGS) -o $@ $^
@@ -33,6 +35,9 @@ fork_pipe: main.o mandel/base.o mandel/fork_pipe.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 thread_scheduling_mutex: main.o mandel/base.o mandel/thread_scheduling_mutex.o
+	$(CC) $(CFLAGS) -lpthread -o $@ $^
+
+thread_scheduling_atomic: main.o mandel/base.o mandel/thread_scheduling_atomic.o
 	$(CC) $(CFLAGS) -lpthread -o $@ $^
 
 clean:

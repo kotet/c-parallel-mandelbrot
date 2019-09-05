@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "mandel.h"
 
-#define PROCESS_NUM (16)
+#define PROCESS_NUM (8)
 #define PIPE_READ (0)
 #define PIPE_WRITE (1)
 

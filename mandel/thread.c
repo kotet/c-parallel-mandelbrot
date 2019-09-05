@@ -4,7 +4,7 @@
 #include "mandel.h"
 
 #include <stdio.h>
-#define THREAD_NUM (16)
+#define THREAD_NUM (8)
 
 struct mandel_calc_args
 {
